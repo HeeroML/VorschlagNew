@@ -104,8 +104,8 @@ Deine ID: <code>${conversation.session.groupID}</code>
                   (ctx.from?.username ? "Username: @" + ctx.from.username + "\n" : "") +
                   "Erster Name: " +
                   (ctx.from?.first_name ? ctx.from.first_name : "") +
-                  "\nTelegramID: tg://user?id=" +
-                  ctx.from?.id
+                  "\nTelegramID: <code>" +
+                  ctx.from?.id + "</code>"
               );
         }  else {   
             await ctx.reply("Wir haben deinen Vorschlag verworfen.");
@@ -173,6 +173,7 @@ Stand 08/2023`,
       }
     );
   });
+
 bot.callbackQuery("liste", async (ctx: MyContext) => {
     const menu = await getCategoriesLinkMarkup();
     await ctx.answerCallbackQuery("Liste wird geladen...");
@@ -189,7 +190,15 @@ bot.callbackQuery("liste", async (ctx: MyContext) => {
         );
 });
 
-bot.use((ctx) => ctx.reply("What a nice update."));
+bot.command("reply", (ctx) => {
+    const input = ctx.match;
+    const [number, ...textArray] = input.split(" ").slice(1);
+    const text = textArray.join(" ");
+    ctx.api.sendMessage(number, text);
+}
+);
+
+bot.use((ctx) => ctx.reply("Bitte gib /start ein."));
 
 bot.catch((err) => {
     const ctx = err.ctx;

@@ -1,13 +1,13 @@
 import { Bot, session, InlineKeyboard, GrammyError, HttpError, Keyboard } from "./deps.deno.ts";
 import {
-
+    nanoid,
     conversations,
     createConversation,
-  } from "./deps.deno.ts";
-import meta from "npm:meta-grabber";
+} from "./deps.deno.ts";
+import {meta} from "./modules/meta.ts";
 
 import { MyContext, MyConversation, SessionData } from "./types/types.ts";
-import { getAddConfirmMarkup, getCategoriesLinkMarkup, getCategoriesMarkup, templatePost, nanoid } from "./helpers.ts";
+import { getAddConfirmMarkup, getCategoriesLinkMarkup, getCategoriesMarkup, templatePost } from "./helpers.ts";
 import { ListChannel, groupArray } from "./config/categories.ts";
 import { autoRetry } from "https://esm.sh/@grammyjs/auto-retry";
 
@@ -30,9 +30,14 @@ async function greeting(conversation: MyConversation, ctx: MyContext) {
         await ctx.reply('Danke, als nächstes benötigen wir den Link zur Gruppe oder Kanal. Beachte bitte, dass der Link im Format https://t.me/... sein muss.');
         conversation.session.groupType = response.callbackQuery.data; 
         const url = await conversation.form.url();
-        const objectTelegramMeta = meta(url);
-        conversation.session.groupName = objectTelegramMeta["title"] ?? "";
+        interface TelegramMeta {
+            title?: string;
+            description?: string;
+        }
+
+        const objectTelegramMeta: TelegramMeta = await meta(url.toString());
         conversation.session.groupDescription = objectTelegramMeta["description"] ?? "";
+        conversation.session.groupName = objectTelegramMeta["title"] ?? "";
         conversation.session.groupLink = url.toString();
         await ctx.reply('Willst du noch eine Beschreibung hinzufügen? Wenn ja, schreibe sie bitte in den Chat(Tippe in das Textfeld). Wenn nicht, wähle einfach "Nein" aus.', {
             reply_markup: new Keyboard()
@@ -89,7 +94,7 @@ Deine ID: <code>${conversation.session.groupID}</code>
         ctx = finalAnswer
         await ctx.deleteMessage();
         if (finalAnswer.callbackQuery.data == "add") {
-            const final =  await ctx.reply("Danke, dein Vorschlag wurde an die Admins weitergeleitet!", {
+            await ctx.reply("Danke, dein Vorschlag wurde an die Admins weitergeleitet!", {
                 parse_mode: "HTML",
                 disable_web_page_preview: true,
             })
@@ -101,14 +106,14 @@ Deine ID: <code>${conversation.session.groupID}</code>
             await ctx.api.sendMessage(
                 ListChannel,
                 "Neuer Eintrag von: @" +
-                  (ctx.from?.username ? "Username: @" + ctx.from.username + "\n" : "") +
-                  "Erster Name: " +
-                  (ctx.from?.first_name ? ctx.from.first_name : "") +
-                  "\nTelegramID: <code>" +
-                  ctx.from?.id + "</code>", {
+                (ctx.from?.username ? "Username: @" + ctx.from.username + "\n" : "") +
+                "Erster Name: " +
+                (ctx.from?.first_name ? ctx.from.first_name : "") +
+                "\nTelegramID: <code>" +
+                ctx.from?.id + "</code>", {
                     parse_mode: "HTML",
-                  }
-              );
+                }
+            );
         }  else {   
             await ctx.reply("Wir haben deinen Vorschlag verworfen.");
             conversation.session.groupType = "none";

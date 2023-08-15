@@ -1,7 +1,8 @@
+// deno-lint-ignore-file require-await
 import { InlineKeyboard } from "./deps.deno.ts";
 import { groupArray, groupArray18 } from "./config/categories.ts";
 import { MyContext } from "./types/types.ts";
-import { customAlphabet } from "npm:nanoid";
+import {customAlphabet} from "https://deno.land/x/nanoid/async.ts";
 
 const alphabet =
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

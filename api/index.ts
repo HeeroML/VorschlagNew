@@ -10,6 +10,7 @@ import meta from "meta-grabber";
 import { MyContext, MyConversation, SessionData } from "./types/bot.js";
 import { getAddConfirmMarkup, getCategoriesLinkMarkup, getCategoriesMarkup, templatePost, nanoid } from "./helpers.js";
 import { ListChannel, groupArray } from "./config/categories.js";
+import { run } from "@grammyjs/runner";
 
 
 const token = process.env.BOT_TOKEN;
@@ -201,5 +202,4 @@ bot.catch((err) => {
     console.error("Unknown error:", e);
     }
 });
-
-export default webhookCallback(bot, "http");
+run(bot);

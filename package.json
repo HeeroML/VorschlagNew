@@ -1,0 +1,36 @@
+{
+  "name": "vorschlagsbot",
+  "version": "4.0.0",
+  "description": "A Telegram bot that handles updates of @gruppen List.",
+  "main": "dist",
+  "engines": {
+    "node": ">14.8"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc & node build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HeeroML/VorschlagNew.git"
+  },
+  "author": "Mike Leitner <tecardo@gmail.com>",
+  "license": "LGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/HeeroML/VorschlagNew/issues"
+  },
+  "homepage": "https://t.me/gruppen",
+  "dependencies": {
+    "@grammyjs/conversations": "^1.1.2",
+    "grammy": "^1.17.2",
+    "meta-grabber": "^1.0.0",
+    "nanoid": "^3.3.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.0",
+    "@types/node-fetch": "^2.6.4",
+    "@types/uuid": "^9.0.2",
+    "@vercel/node": "^2.15.10",
+    "typescript": "^5.1.6"
+  }
+}

@@ -44,13 +44,18 @@ async function greeting(conversation: MyConversation, ctx: MyContext) {
             .oneTime()
             .resized()
         });
-        const description = await conversation.form.text();
-        if (description != "Nein") {
-            conversation.session.groupDescription = description;
+        const description = await conversation.waitFor(":text");
+        const descriptionMessage = description.message;
+        if (!descriptionMessage) {
+            conversation.log("Description message is undefined");
+        }
+        if (descriptionMessage && descriptionMessage.text !== "Nein") {
+            const descontxt = descriptionMessage.text;
+            conversation.session.groupDescription = descontxt;
         }
         const menu = await getCategoriesMarkup();
         conversation.session.groupID = nanoid();
-        await ctx.editMessageText('Danke, als nächstes benötigen wir noch die Kategorie. Bitte wähle eine aus.',   {
+        await description.editMessageText('Danke, als nächstes benötigen wir noch die Kategorie. Bitte wähle eine aus.',   {
             reply_markup: menu,
             parse_mode: "HTML",
             disable_web_page_preview: true,
@@ -59,7 +64,7 @@ async function greeting(conversation: MyConversation, ctx: MyContext) {
         conversation.session.categoryId = Number(
             category.callbackQuery?.data?.replace("channelCat.", "")
         );
-        await ctx.editMessageText('Danke, hier sind deine Daten noch einmal. Solltest du auf ja klicken, wird der Vorschlag an die Admins weitergeleitet.');
+        await category.editMessageText('Danke, hier sind deine Daten noch einmal. Solltest du auf ja klicken, wird der Vorschlag an die Admins weitergeleitet.');
         const menuFinal = await getAddConfirmMarkup(ctx);
         let textGroup: string;
         let textGroup2: string;

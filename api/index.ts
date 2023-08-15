@@ -203,4 +203,11 @@ bot.catch((err) => {
     console.error("Unknown error:", e);
     }
 });
-run(bot);
+
+const runner = run(bot);
+
+// Stopping the bot when the Node.js process
+// is about to be terminated
+const stopRunner = () => runner.isRunning() && runner.stop();
+process.once("SIGINT", stopRunner);
+process.once("SIGTERM", stopRunner);

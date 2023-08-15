@@ -106,5 +106,4 @@ dist
 #TypeScript Output
 dist/
 .DS_Store
-package-lock.json
 build/

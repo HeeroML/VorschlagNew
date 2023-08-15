@@ -163,7 +163,15 @@ bot.callbackQuery("vorschlag", async (ctx) => {
 });
 const inlineKeyboard = new InlineKeyboard().text("Neuer Vorschlag", "vorschlag").text("Gruppenübersicht", "liste");
 
-bot.command("start", async (ctx) => await ctx.reply("Willkommen beim Vorschlagsbot für @gruppen!\n\nSchicke /vorschlag um einen neuen Vorschlag zu machen.\nSchicke /liste um die aktuelle Liste der Gruppen zu sehen.", { reply_markup: inlineKeyboard }));
+bot.command("start", async (ctx) => {
+    ctx.session.groupType = "none";
+    ctx.session.groupName = "string";
+    ctx.session.groupDescription = "";
+    ctx.session.groupLink = "none";
+    ctx.session.groupID = "";
+    ctx.session.categoryId = 100;
+    await ctx.reply("Willkommen beim Vorschlagsbot für @gruppen!\n\nSchicke /vorschlag um einen neuen Vorschlag zu machen.\nSchicke /liste um die aktuelle Liste der Gruppen zu sehen.", { reply_markup: inlineKeyboard })
+});
 bot.command("liste", async (ctx: MyContext) => {
     const menu = await getCategoriesLinkMarkup();
     await ctx.reply(

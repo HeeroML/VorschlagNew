@@ -120,7 +120,7 @@ Deine ID: <code>${conversation.session.groupID}</code>
 
 bot.use(session({
     // Add session types to adapter.
-    //storage: freeStorage<SessionData>(bot.token),
+    storage: freeStorage<SessionData>(bot.token),
     initial(): SessionData {
         return {
         page: 0,
@@ -198,7 +198,7 @@ bot.command("reply", (ctx) => {
 }
 );
 
-bot.use((ctx) => ctx.reply("Bitte gib /start ein."));
+//bot.use((ctx) => ctx.reply("Bitte gib /start ein."));
 
 bot.catch((err) => {
     const ctx = err.ctx;
@@ -220,3 +220,7 @@ const runner = run(bot);
 const stopRunner = () => runner.isRunning() && runner.stop();
 process.once("SIGINT", stopRunner);
 process.once("SIGTERM", stopRunner);
+
+function freeStorage<T>(token: string): import("grammy").StorageAdapter<SessionData> | undefined {
+    throw new Error("Function not implemented.");
+}

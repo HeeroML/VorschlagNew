@@ -162,7 +162,7 @@ bot.callbackQuery("vorschlag", async (ctx) => {
 });
 const inlineKeyboard = new InlineKeyboard().text("Neuer Vorschlag", "vorschlag").text("Gruppenübersicht", "liste");
 
-bot.command("start", (ctx) => ctx.reply("Willkommen beim Vorschlagsbot für @gruppen!\n\nSchicke /vorschlag um einen neuen Vorschlag zu machen.\nSchicke /liste um die aktuelle Liste der Gruppen zu sehen.", { reply_markup: inlineKeyboard }));
+bot.command("start", async (ctx) => await ctx.reply("Willkommen beim Vorschlagsbot für @gruppen!\n\nSchicke /vorschlag um einen neuen Vorschlag zu machen.\nSchicke /liste um die aktuelle Liste der Gruppen zu sehen.", { reply_markup: inlineKeyboard }));
 bot.command("liste", async (ctx: MyContext) => {
     const menu = await getCategoriesLinkMarkup();
     await ctx.reply(
@@ -194,13 +194,13 @@ bot.callbackQuery("liste", async (ctx: MyContext) => {
         );
 });
 
-/*bot.command("reply", (ctx) => {
+bot.command("reply", async (ctx) => {
     const input = ctx.match;
     const [number, ...textArray] = input.split(" ").slice(1);
     const text = textArray.join(" ");
-    ctx.api.sendMessage(number, text);
+    await ctx.api.sendMessage(number, text);
 }
-);*/
+);
 
 //bot.use((ctx) => ctx.reply("Bitte gib /start ein."));
 

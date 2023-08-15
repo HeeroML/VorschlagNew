@@ -89,6 +89,7 @@ Deine ID: <code>${conversation.session.groupID}</code>
         );
         const finalAnswer = await conversation.waitFor("callback_query:data");
         ctx = finalAnswer
+        await ctx.deleteMessage();
         if (finalAnswer.callbackQuery.data == "add") {
             const final =  await ctx.reply("Danke, dein Vorschlag wurde an die Admins weitergeleitet!", {
                 parse_mode: "HTML",
@@ -108,7 +109,6 @@ Deine ID: <code>${conversation.session.groupID}</code>
                   "\nTelegramID: <code>" +
                   ctx.from?.id + "</code>", {
                     parse_mode: "HTML",
-                    reply_markup: menu,
                   }
               );
         }  else {   
@@ -198,9 +198,11 @@ bot.command("reply", async (ctx) => {
     const input = ctx.match;
     const [number, ...textArray] = input.split(" ").slice(1);
     const text = textArray.join(" ");
-    await ctx.api.sendMessage(number, text);
-}
-);
+    try {
+    //await ctx.api.sendMessage(number, text);
+    await ctx.reply("Nachricht wurde gesendet. " +  number + " " + text);
+} catch (err) { console.log(err) }
+});
 
 //bot.use((ctx) => ctx.reply("Bitte gib /start ein."));
 

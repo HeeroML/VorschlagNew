@@ -197,15 +197,15 @@ bot.callbackQuery("liste", async (ctx: MyContext) => {
 });
 
 bot.command("reply", async (ctx) => {
-    const input = ctx.match;
-    const [number, ...textArray] = input.split(" ").slice(1);
+    if (!ctx.message) return;
+    const input = ctx.message.text;
+    const [_, number, ...textArray] = input.split(" ");
     const text = textArray.join(" ");
     try {
-    //await ctx.api.sendMessage(number, text);
-    await ctx.reply("Nachricht wurde gesendet. " +  number + " " + text);
-} catch (err) { console.log(err) }
+        //await ctx.api.sendMessage(number, text);
+        await ctx.reply("Nachricht wurde gesendet. " +  number + " " + text);
+    } catch (err) { console.log(err) }
 });
-
 //bot.use((ctx) => ctx.reply("Bitte gib /start ein."));
 
 bot.catch((err) => {

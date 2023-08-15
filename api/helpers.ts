@@ -1,7 +1,7 @@
-import { InlineKeyboard } from "grammy";
-import { groupArray, groupArray18 } from "./config/categories.js";
-import { MyContext } from "./types/bot.js";
-import { customAlphabet } from "nanoid";
+import { InlineKeyboard } from "./deps.deno.ts";
+import { groupArray, groupArray18 } from "./config/categories.ts";
+import { MyContext } from "./types/types.ts";
+import { customAlphabet } from "npm:nanoid";
 
 const alphabet =
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

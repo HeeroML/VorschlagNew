@@ -1,24 +1,20 @@
-import { Bot, type Context, session, InlineKeyboard, GrammyError, HttpError, Keyboard, webhookCallback } from "grammy";
+import { Bot, session, InlineKeyboard, GrammyError, HttpError, Keyboard } from "./deps.deno.ts";
 import {
+
     conversations,
     createConversation,
-} from "@grammyjs/conversations";
-//@ts-ignore
-import meta from "meta-grabber";
-import { MyContext, MyConversation, SessionData } from "./types/bot.js";
-import { getAddConfirmMarkup, getCategoriesLinkMarkup, getCategoriesMarkup, templatePost, nanoid } from "./helpers.js";
-import { ListChannel, groupArray } from "./config/categories.js";
-import { run } from "@grammyjs/runner";
-import { autoRetry } from "@grammyjs/auto-retry";
-import { freeStorage } from "@grammyjs/storage-free";
-import express from "express";
+  } from "./deps.deno.ts";
+import meta from "npm:meta-grabber";
 
+import { MyContext, MyConversation, SessionData } from "./types/types.ts";
+import { getAddConfirmMarkup, getCategoriesLinkMarkup, getCategoriesMarkup, templatePost, nanoid } from "./helpers.ts";
+import { ListChannel, groupArray } from "./config/categories.ts";
+import { autoRetry } from "https://esm.sh/@grammyjs/auto-retry";
 
+const token = Deno.env.get("TOKEN");
+if (token === undefined) throw new Error("Env var TOKEN required for bot!");
 
-const token = process.env.BOT_TOKEN;
-if (!token) throw new Error("BOT_TOKEN is unset");
-
-const bot = new Bot<MyContext>(token);
+export const bot = new Bot<MyContext>(token);
 bot.api.config.use(autoRetry());
 /** Defines the conversation */
 async function greeting(conversation: MyConversation, ctx: MyContext) {
@@ -221,14 +217,3 @@ bot.catch((err) => {
     }
 });
 
-const port = 8000;
-const app = express();
-
-app.use(express.json());
-app.use(`/${bot.token}`, webhookCallback(bot, "express"));
-app.use((_req, res) => res.status(200).send());
-
-app.listen(port, () => console.log(`listening on port ${port}`));
-
-// Stopping the bot when the Node.js process
-// is about to be terminated

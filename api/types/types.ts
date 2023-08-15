@@ -1,9 +1,4 @@
-import type { Context as GrammyContext, SessionFlavor } from "grammy";
-import {
-  type Conversation,
-  type ConversationFlavor
-} from "@grammyjs/conversations";
-
+import { Context, ConversationFlavor, Conversation, SessionFlavor } from "../deps.deno.ts";
 
 export interface SessionData {
   page?: number;
@@ -21,7 +16,7 @@ export interface SessionData {
   groupDescription: string;
 }
 
-export type MyContext = GrammyContext &
+export type MyContext = Context &
   SessionFlavor<SessionData> & ConversationFlavor;
 
 export type MyConversation = Conversation<MyContext>;

@@ -194,13 +194,13 @@ bot.callbackQuery("liste", async (ctx: MyContext) => {
         );
 });
 
-bot.command("reply", (ctx) => {
+/*bot.command("reply", (ctx) => {
     const input = ctx.match;
     const [number, ...textArray] = input.split(" ").slice(1);
     const text = textArray.join(" ");
     ctx.api.sendMessage(number, text);
 }
-);
+);*/
 
 //bot.use((ctx) => ctx.reply("Bitte gib /start ein."));
 

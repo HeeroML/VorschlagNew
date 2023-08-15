@@ -1,7 +1,5 @@
 import { Bot, type Context, session, InlineKeyboard, GrammyError, HttpError, Keyboard, webhookCallback } from "grammy";
 import {
-    type Conversation,
-    type ConversationFlavor,
     conversations,
     createConversation,
 } from "@grammyjs/conversations";
@@ -12,6 +10,7 @@ import { getAddConfirmMarkup, getCategoriesLinkMarkup, getCategoriesMarkup, temp
 import { ListChannel, groupArray } from "./config/categories.js";
 import { run } from "@grammyjs/runner";
 import { autoRetry } from "@grammyjs/auto-retry";
+import { freeStorage } from "@grammyjs/storage-free";
 
 
 const token = process.env.BOT_TOKEN;
@@ -220,7 +219,3 @@ const runner = run(bot);
 const stopRunner = () => runner.isRunning() && runner.stop();
 process.once("SIGINT", stopRunner);
 process.once("SIGTERM", stopRunner);
-
-function freeStorage<T>(token: string): import("grammy").StorageAdapter<SessionData> | undefined {
-    throw new Error("Function not implemented.");
-}

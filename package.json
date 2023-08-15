@@ -24,6 +24,7 @@
     "@grammyjs/auto-retry": "^1.1.1",
     "@grammyjs/conversations": "^1.1.2",
     "@grammyjs/runner": "^2.0.3",
+    "@grammyjs/storage-free": "^2.3.0",
     "grammy": "^1.17.2",
     "meta-grabber": "^1.0.0",
     "nanoid": "^3.3.4"

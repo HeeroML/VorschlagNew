@@ -11,13 +11,14 @@ import { MyContext, MyConversation, SessionData } from "./types/bot.js";
 import { getAddConfirmMarkup, getCategoriesLinkMarkup, getCategoriesMarkup, templatePost, nanoid } from "./helpers.js";
 import { ListChannel, groupArray } from "./config/categories.js";
 import { run } from "@grammyjs/runner";
+import { autoRetry } from "@grammyjs/auto-retry";
 
 
 const token = process.env.BOT_TOKEN;
 if (!token) throw new Error("BOT_TOKEN is unset");
 
 const bot = new Bot<MyContext>(token);
-
+bot.api.config.use(autoRetry());
 /** Defines the conversation */
 async function greeting(conversation: MyConversation, ctx: MyContext) {
     await ctx.reply("Als erstes bräuchten wir die Information was du denn hinzufügen möchtest. Kanal oder Gruppe?", {

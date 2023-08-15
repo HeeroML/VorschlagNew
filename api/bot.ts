@@ -26,7 +26,7 @@ async function greeting(conversation: MyConversation, ctx: MyContext) {
         disable_web_page_preview: true,
     });
     const response = await conversation.waitFor("callback_query:data");
-        await ctx.editMessageText('Danke, als nächstes benötigen wir den Link zur Gruppe oder Kanal. Beachte bitte, dass der Link im Format https://t.me/... sein muss.');
+        await response.editMessageText('Danke, als nächstes benötigen wir den Link zur Gruppe oder Kanal. Beachte bitte, dass der Link im Format https://t.me/... sein muss.');
         conversation.session.groupType = response.callbackQuery.data; 
         const url = await conversation.form.url();
         interface TelegramMeta {

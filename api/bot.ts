@@ -56,7 +56,7 @@ async function greeting(conversation: MyConversation, ctx: MyContext) {
             disable_web_page_preview: true,
         });
         const category = await conversation.waitFor("callback_query:data");
-        await ctx.deleteMessage();
+        try {await ctx.deleteMessage();} catch { conversation.log("Message not found")}
         conversation.session.categoryId = Number(
             category.callbackQuery?.data?.replace("channelCat.", "")
         );
@@ -91,7 +91,7 @@ Deine ID: <code>${conversation.session.groupID}</code>
         );
         const finalAnswer = await conversation.waitFor("callback_query:data");
         ctx = finalAnswer
-        await ctx.deleteMessage();
+        try {await ctx.deleteMessage();} catch { conversation.log("Message not found")}
         if (finalAnswer.callbackQuery.data == "add") {
             await ctx.reply("Danke, dein Vorschlag wurde an die Admins weitergeleitet!", {
                 parse_mode: "HTML",
@@ -157,7 +157,7 @@ bot.command("vorschlag", async (ctx) => {
 });
 bot.callbackQuery("vorschlag", async (ctx) => {
     await ctx.answerCallbackQuery("Vorschlagsdialog wird gestartet...");
-    await ctx.deleteMessage();
+    try {await ctx.deleteMessage();} catch { console.log("Message not found")}
     //await ctx.reply("Dann starten wir mal!");
     // enter the function "greeting" you declared
     await ctx.conversation.enter("greeting");

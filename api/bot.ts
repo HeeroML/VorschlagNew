@@ -28,6 +28,7 @@ async function greeting(conversation: MyConversation, ctx: MyContext) {
     const response = await conversation.waitFor("callback_query:data");
         await response.editMessageText('Danke, als nächstes benötigen wir den Link zur Gruppe oder Kanal. Beachte bitte, dass der Link im Format https://t.me/... sein muss.');
         conversation.session.groupType = response.callbackQuery.data; 
+        
         const url = await conversation.form.url();
         interface TelegramMeta {
             title?: string;
@@ -44,6 +45,7 @@ async function greeting(conversation: MyConversation, ctx: MyContext) {
             .oneTime()
             .resized()
         });
+
         const description = await conversation.waitFor(":text");
         const descriptionMessage = description.message;
         if (!descriptionMessage) {
@@ -55,7 +57,7 @@ async function greeting(conversation: MyConversation, ctx: MyContext) {
         }
         const menu = await getCategoriesMarkup();
         conversation.session.groupID = nanoid();
-        await description.editMessageText('Danke, als nächstes benötigen wir noch die Kategorie. Bitte wähle eine aus.',   {
+        await description.reply('Danke, als nächstes benötigen wir noch die Kategorie. Bitte wähle eine aus.',   {
             reply_markup: menu,
             parse_mode: "HTML",
             disable_web_page_preview: true,

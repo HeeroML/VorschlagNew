@@ -5,13 +5,44 @@
 
 app = "vorschlagsapp2"
 primary_region = "ams"
+kill_signal = "SIGINT"
+kill_timeout = 5
+
+[processes]
+  app = "node ./build/index.js"
+
+# Adjust the NODE_ENV environment variable to suppress the warning
+[build.args]
+  NODE_ENV = "production"
 
 [build]
-
-[http_service]
-  internal_port = 3000
-  force_https = true
+  builder = "heroku/buildpacks:20"
+  
+[[services]]
+  http_checks = []
+  internal_port = 8000
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
   auto_stop_machines = true
   auto_start_machines = false
   min_machines_running = 1
-  processes = ["app"]
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"

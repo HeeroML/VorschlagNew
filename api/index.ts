@@ -11,6 +11,8 @@ import { ListChannel, groupArray } from "./config/categories.js";
 import { run } from "@grammyjs/runner";
 import { autoRetry } from "@grammyjs/auto-retry";
 import { freeStorage } from "@grammyjs/storage-free";
+import express from "express";
+
 
 
 const token = process.env.BOT_TOKEN;
@@ -212,10 +214,14 @@ bot.catch((err) => {
     }
 });
 
-const runner = run(bot);
+const port = 8000;
+const app = express();
+
+app.use(express.json());
+app.use(`/${bot.token}`, webhookCallback(bot, "express"));
+app.use((_req, res) => res.status(200).send());
+
+app.listen(port, () => console.log(`listening on port ${port}`));
 
 // Stopping the bot when the Node.js process
 // is about to be terminated
-const stopRunner = () => runner.isRunning() && runner.stop();
-process.once("SIGINT", stopRunner);
-process.once("SIGTERM", stopRunner);

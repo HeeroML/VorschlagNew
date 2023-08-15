@@ -196,7 +196,7 @@ bot.callbackQuery("liste", async (ctx: MyContext) => {
         );
 });
 
-bot.command("reply", async (ctx) => {
+/*bot.command("reply", async (ctx) => {
     if (!ctx.message) return;
     const input = ctx.message.text;
     const [_, number, ...textArray] = input.split(" ");
@@ -205,7 +205,7 @@ bot.command("reply", async (ctx) => {
         //await ctx.api.sendMessage(number, text);
         await ctx.reply("Nachricht wurde gesendet. " +  number + " " + text);
     } catch (err) { console.log(err) }
-});
+});*/
 //bot.use((ctx) => ctx.reply("Bitte gib /start ein."));
 
 bot.catch((err) => {

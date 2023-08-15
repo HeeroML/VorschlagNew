@@ -30,6 +30,7 @@ async function greeting(conversation: MyConversation, ctx: MyContext) {
         disable_web_page_preview: true,
     });
     const response = await conversation.waitFor("callback_query:data");
+    await ctx.deleteMessage();
         await ctx.reply('Danke, als nächstes benötigen wir den Link zur Gruppe oder Kanal. Beachte bitte, dass der Link im Format https://t.me/... sein muss.');
         conversation.session.groupType = response.callbackQuery.data; 
         const url = await conversation.form.url();
@@ -55,6 +56,7 @@ async function greeting(conversation: MyConversation, ctx: MyContext) {
             disable_web_page_preview: true,
         });
         const category = await conversation.waitFor("callback_query:data");
+        await ctx.deleteMessage();
         conversation.session.categoryId = Number(
             category.callbackQuery?.data?.replace("channelCat.", "")
         );
@@ -89,6 +91,7 @@ Deine ID: <code>${conversation.session.groupID}</code>
         );
         const finalAnswer = await conversation.waitFor("callback_query:data");
         ctx = finalAnswer
+        await ctx.deleteMessage();
         if (finalAnswer.callbackQuery.data == "add") {
             const final =  await ctx.reply("Danke, dein Vorschlag wurde an die Admins weitergeleitet!", {
                 parse_mode: "HTML",

@@ -26,7 +26,7 @@ async function greeting(conversation: MyConversation, ctx: MyContext) {
         disable_web_page_preview: true,
     });
     const response = await conversation.waitFor("callback_query:data");
-        await ctx.reply('Danke, als nächstes benötigen wir den Link zur Gruppe oder Kanal. Beachte bitte, dass der Link im Format https://t.me/... sein muss.');
+        await ctx.editMessageText('Danke, als nächstes benötigen wir den Link zur Gruppe oder Kanal. Beachte bitte, dass der Link im Format https://t.me/... sein muss.');
         conversation.session.groupType = response.callbackQuery.data; 
         const url = await conversation.form.url();
         interface TelegramMeta {
@@ -50,17 +50,16 @@ async function greeting(conversation: MyConversation, ctx: MyContext) {
         }
         const menu = await getCategoriesMarkup();
         conversation.session.groupID = nanoid();
-        await ctx.reply('Danke, als nächstes benötigen wir noch die Kategorie. Bitte wähle eine aus.',   {
+        await ctx.editMessageText('Danke, als nächstes benötigen wir noch die Kategorie. Bitte wähle eine aus.',   {
             reply_markup: menu,
             parse_mode: "HTML",
             disable_web_page_preview: true,
         });
         const category = await conversation.waitFor("callback_query:data");
-        try {await ctx.deleteMessage();} catch { conversation.log("Message not found")}
         conversation.session.categoryId = Number(
             category.callbackQuery?.data?.replace("channelCat.", "")
         );
-        await ctx.reply('Danke, hier sind deine Daten noch einmal. Solltest du auf ja klicken, wird der Vorschlag an die Admins weitergeleitet.');
+        await ctx.editMessageText('Danke, hier sind deine Daten noch einmal. Solltest du auf ja klicken, wird der Vorschlag an die Admins weitergeleitet.');
         const menuFinal = await getAddConfirmMarkup(ctx);
         let textGroup: string;
         let textGroup2: string;

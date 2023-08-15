@@ -106,7 +106,10 @@ Deine ID: <code>${conversation.session.groupID}</code>
                   "Erster Name: " +
                   (ctx.from?.first_name ? ctx.from.first_name : "") +
                   "\nTelegramID: <code>" +
-                  ctx.from?.id + "</code>"
+                  ctx.from?.id + "</code>", {
+                    parse_mode: "HTML",
+                    reply_markup: menu,
+                  }
               );
         }  else {   
             await ctx.reply("Wir haben deinen Vorschlag verworfen.");

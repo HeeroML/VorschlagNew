@@ -126,7 +126,7 @@ Deine ID: <code>${conversation.session.groupID}</code>
 
 bot.use(session({
     // Add session types to adapter.
-    storage: freeStorage<SessionData>(bot.token),
+    //storage: freeStorage<SessionData>(bot.token),
     initial(): SessionData {
         return {
         page: 0,
